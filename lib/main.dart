@@ -34,10 +34,18 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemCount: listaAtracoes.length,
-        itemBuilder: (context,index){
+        itemBuilder: (context, index) {
+
           return ListTile(
             title: Text(listaAtracoes[index].nome),
-            subtitle: Text('dia: '+ listaAtracoes[index].dia.toString()),
+            subtitle: Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: listaAtracoes[index]
+              .tags
+              .map((tag) => Chip(label: Text('#$tag')))
+              .toList(),
+            )
           );
         },
       ),
