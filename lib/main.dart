@@ -52,6 +52,12 @@ class _HomePageState extends State<HomePage> {
 
           return ListTile(
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AtracaoPage(atracao: listaAtracoes[index])),
+              );
             },
             title: Text(listaAtracoes[index].nome),
             subtitle: Wrap(
@@ -76,6 +82,34 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class AtracaoPage extends StatelessWidget {
+  final Atracao atracao;
+
+  const AtracaoPage({Key? key, required this.atracao}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(atracao.nome)),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var tag in atracao.tags) Chip(label: Text('#$tag')),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Voltar'),
+            ),
+          ],
+        ),
       ),
     );
   }
