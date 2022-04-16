@@ -10,6 +10,7 @@ class RockInRio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      darkTheme: ThemeData.dark(),
       title: 'Rock in Rio',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo),
@@ -26,6 +27,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<Atracao> _listFavoritos = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,17 +38,42 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemCount: listaAtracoes.length,
         itemBuilder: (context, index) {
+          final isFavorito = _listFavoritos.contains(listaAtracoes[index]);
+
+          void _favoritar() {
+            setState(() {
+              if (isFavorito) {
+                _listFavoritos.remove(listaAtracoes[index]);
+              } else {
+                _listFavoritos.add(listaAtracoes[index]);
+              }
+            });
+          }
 
           return ListTile(
+            onTap: () {
+            },
             title: Text(listaAtracoes[index].nome),
             subtitle: Wrap(
-              spacing: 8,
-              runSpacing: 4,
+              spacing: 5,
+              runSpacing: 10,
               children: listaAtracoes[index]
-              .tags
-              .map((tag) => Chip(label: Text('#$tag')))
-              .toList(),
-            )
+                  .tags
+                  .map((tag) => Chip(label: Text('#$tag')))
+                  .toList(),
+            ),
+            leading: CircleAvatar(
+              backgroundColor: Colors.indigo,
+              child: Text('${listaAtracoes[index].dia}'),
+            ),
+            trailing: IconButton(
+              onPressed: () {
+                _favoritar();
+              },
+              icon: isFavorito
+                  ? const Icon(Icons.favorite, color: Colors.red)
+                  : const Icon(Icons.favorite_border),
+            ),
           );
         },
       ),
